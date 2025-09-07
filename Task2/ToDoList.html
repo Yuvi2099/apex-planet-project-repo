@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Interactive Task Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .background-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+        }
+
+        .shape-1 {
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(#ff9a9e, #fad0c4);
+            top: -250px;
+            left: -250px;
+        }
+
+        .shape-2 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(#a1c4fd, #c2e9fb);
+            bottom: -200px;
+            right: -200px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(to right, #fff, #e0e0e0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .subtitle {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .calendar-page {
+            display: none;
+            text-align: center;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .calendar-day {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-day:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
+        }
+
+        .calendar-day.selected {
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            color: white;
+        }
+
+        .day-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(to right, #43e97b, #38f9d7);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(150%);
+            transition: transform 0.5s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .date-inputs {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .date-inputs input {
+            flex: 1;
+        }
+
+        .task-display {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .date-inputs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+    </div>
+
+    <div class="container" id="form-page">
+        <h1><i class="fas fa-tasks"></i> TaskFlow</h1>
+        <p class="subtitle">Plan your tasks efficiently and beautifully</p>
+        
+        <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" placeholder="Enter your name">
+        </div>
+        
+        <div class="form-group">
+            <label for="task">Task Description</label>
+            <textarea id="task" rows="3" placeholder="Describe your task"></textarea>
+        </div>
+        
+        <button id="submit-btn">Continue to Schedule <i class="fas fa-arrow-right"></i></button>
+    </div>
+
+    <div class="container calendar-page" id="calendar-page">
+        <h1><i class="far fa-calendar-alt"></i> Schedule Your Task</h1>
+        <p class="subtitle">Select start and end dates for your task</p>
+        
+        <div class="date-inputs">
+            <div class="form-group">
+                <label for="start-date">Start Date</label>
+                <input type="date" id="start-date">
+            </div>
+            
+            <div class="form-group">
+                <label for="end-date">End Date</label>
+                <input type="date" id="end-date">
+            </div>
+        </div>
+        
+        <div class="calendar">
+            <div class="calendar-day">
+                <div class="day-name">Mon</div>
+                <div>10</div>
+            </div>
+            <div class="calendar-day">
+                <div class="day-name">Tue</div>
+                <div>11</div>
+            </div>
+            <div class="calendar-day">
+                <div class="day-name">Wed</div>
+                <div>12</div>
+            </div>
+            <div class="calendar-day">
+                <div class="day-name">Thu</div>
+                <div>13</div>
+            </div>
+            <div class="calendar-day selected">
+                <div class="day-name">Fri</div>
+                <div>14</div>
+            </div>
+            <div class="calendar-day">
+                <div class="day-name">Sat</div>
+                <div>15</div>
+            </div>
+            <div class="calendar-day">
+                <div class="day-name">Sun</div>
+                <div>16</div>
+            </div>
+        </div>
+        
+        <div class="task-display">
+            <h3>Your Task:</h3>
+            <p id="task-summary"></p>
+        </div>
+        
+        <button id="save-btn">Save Task <i class="fas fa-save"></i></button>
+    </div>
+
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i> Details saved successfully!
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const submitBtn = document.getElementById('submit-btn');
+            const saveBtn = document.getElementById('save-btn');
+            const notification = document.getElementById('notification');
+            const formPage = document.getElementById('form-page');
+            const calendarPage = document.getElementById('calendar-page');
+            const taskSummary = document.getElementById('task-summary');
+            
+            // Handle form submission
+            submitBtn.addEventListener('click', function() {
+                const name = document.getElementById('name').value;
+                const task = document.getElementById('task').value;
+                
+                if (name && task) {
+                    // Show notification
+                    notification.classList.add('show');
+                    
+                    // Hide notification after 3 seconds
+                    setTimeout(function() {
+                        notification.classList.remove('show');
+                    }, 3000);
+                    
+                    // Switch to calendar page after a brief delay
+                    setTimeout(function() {
+                        formPage.style.display = 'none';
+                        calendarPage.style.display = 'block';
+                        
+                        // Update task summary
+                        taskSummary.textContent = `${name} - ${task}`;
+                    }, 1000);
+                } else {
+                    alert('Please fill in all fields');
+                }
+            });
+            
+            // Handle save button click
+            saveBtn.addEventListener('click', function() {
+                const startDate = document.getElementById('start-date').value;
+                const endDate = document.getElementById('end-date').value;
+                
+                if (startDate && endDate) {
+                    // Show notification
+                    notification.classList.add('show');
+                    
+                    // Hide notification after 3 seconds
+                    setTimeout(function() {
+                        notification.classList.remove('show');
+                    }, 3000);
+                    
+                    // Here you would typically save the data to a database
+                    console.log('Task saved:', {
+                        name: document.getElementById('name').value,
+                        task: document.getElementById('task').value,
+                        startDate: startDate,
+                        endDate: endDate
+                    });
+                } else {
+                    alert('Please select both start and end dates');
+                }
+            });
+            
+            // Add interactivity to calendar days
+            const calendarDays = document.querySelectorAll('.calendar-day');
+            calendarDays.forEach(day => {
+                day.addEventListener('click', function() {
+                    // Remove selected class from all days
+                    calendarDays.forEach(d => d.classList.remove('selected'));
+                    
+                    // Add selected class to clicked day
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Set default dates
+            const today = new Date();
+            const nextWeek = new Date();
+            nextWeek.setDate(today.getDate() + 7);
+            
+            document.getElementById('start-date').valueAsDate = today;
+            document.getElementById('end-date').valueAsDate = nextWeek;
+        });
+    </script>
+</body>
+</html>
