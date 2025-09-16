@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Design with Light Purple Gradient</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #d6cfe8 0%, #a78bc9 50%, #8a63d2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #4a2c82;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+        }
+        
+        p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #5a4b69;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .feature {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .feature:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.4);
+        }
+        
+        .feature i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+            color: #6b3fba;
+        }
+        
+        .feature h2 {
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+            color: #4a2c82;
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .gallery-item {
+            height: 200px;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(106, 49, 189, 0.6) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 16px;
+            margin-top: 40px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Media Queries */
+        
+        /* Tablets */
+        @media (max-width: 1024px) {
+            body {
+                background: linear-gradient(135deg, #d6cfe8 0%, #a78bc9 60%, #9374c9 100%);
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .gallery {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .gallery-item {
+                height: 180px;
+            }
+        }
+        
+        /* Large smartphones */
+        @media (max-width: 768px) {
+            body {
+                background: linear-gradient(135deg, #d6cfe8 0%, #b9a6db 70%, #a78bc9 100%);
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            p {
+                font-size: 1.1rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .gallery-item {
+                height: 160px;
+            }
+        }
+        
+        /* Small smartphones */
+        @media (max-width: 480px) {
+            body {
+                background: linear-gradient(135deg, #d6cfe8 0%, #c5b6e3 80%, #b9a6db 100%);
+                padding: 15px;
+            }
+            
+            header {
+                padding: 25px 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            p {
+                font-size: 1rem;
+            }
+            
+            .features {
+                gap: 15px;
+            }
+            
+            .feature {
+                padding: 20px;
+            }
+            
+            .feature i {
+                font-size: 2.5rem;
+            }
+            
+            .gallery {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .gallery-item {
+                height: 200px;
+            }
+        }
+        
+        /* Extra small devices */
+        @media (max-width: 360px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+            
+            .gallery-item {
+                height: 180px;
+            }
+        }
+        
+        /* Large screens */
+        @media (min-width: 1600px) {
+            body {
+                background: linear-gradient(135deg, #d6cfe8 0%, #a78bc9 40%, #7d51cc 100%);
+            }
+            
+            .container {
+                max-width: 1400px;
+            }
+            
+            h1 {
+                font-size: 3.5rem;
+            }
+            
+            p {
+                font-size: 1.3rem;
+            }
+            
+            .features {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        /* Animation for feature icons */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .feature i {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(106, 49, 189, 0.5);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(106, 49, 189, 0.7);
+        }
+        
+        /* Responsive navigation */
+        .nav-toggle {
+            display: none;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0 40px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 15px 30px;
+            border-radius: 50px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: #5a4b69;
+            font-weight: 600;
+            padding: 10px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        nav a:hover {
+            background: rgba(106, 49, 189, 0.2);
+            color: #4a2c82;
+        }
+        
+        /* Responsive navigation for mobile */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                border-radius: 20px;
+                padding: 20px;
+                gap: 10px;
+                display: none;
+            }
+            
+            .nav-toggle {
+                display: block;
+                margin: 0 auto 20px;
+                padding: 12px 25px;
+                background: rgba(106, 49, 189, 0.8);
+                color: white;
+                border: none;
+                border-radius: 50px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+            
+            .nav-toggle:hover {
+                background: rgba(106, 49, 189, 1);
+            }
+            
+            .nav-toggle:active + ul {
+                display: flex;
+            }
+        }
+        
+        /* Stats section */
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 20px;
+            border-radius: 16px;
+            flex: 1;
+            min-width: 200px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #4a2c82;
+            margin-bottom: 10px;
+        }
+        
+        /* Responsive stats */
+        @media (max-width: 768px) {
+            .stats {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Responsive Design Magic</h1>
+            <p>This page demonstrates the power of media queries with a beautiful light purple gradient. Resize your browser window to see how the layout adapts to different screen sizes!</p>
+        </header>
+        
+        <button class="nav-toggle">Toggle Menu</button>
+        <nav>
+            <ul>
+                <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#"><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="#"><i class="fas fa-concierge-bell"></i> Services</a></li>
+                <li><a href="#"><i class="fas fa-images"></i> Gallery</a></li>
+                <li><a href="#"><i class="fas fa-envelope"></i> Contact</a></li>
+            </ul>
+        </nav>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">98%</div>
+                <div class="stat-desc">Client Satisfaction</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">356</div>
+                <div class="stat-desc">Projects Completed</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">10+</div>
+                <div class="stat-desc">Years Experience</div>
+            </div>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <i class="fas fa-mobile-alt"></i>
+                <h2>Mobile First</h2>
+                <p>Designed with a mobile-first approach for optimal performance on all devices.</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-paint-brush"></i>
+                <h2>Beautiful Gradients</h2>
+                <p>Enjoy stunning light purple color gradients that change based on your device size.</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-bolt"></i>
+                <h2>Smooth Animations</h2>
+                <p>Interactive elements with smooth transitions and hover effects for better engagement.</p>
+            </div>
+        </div>
+        
+        <h2 style="text-align: center; margin-bottom: 20px; font-size: 2rem; color: #4a2c82;">Image Gallery</h2>
+        <div class="gallery">
+            <div class="gallery-item">
+                <img src="https://picsum.photos/400/300?random=1" alt="Gallery image">
+            </div>
+            <div class="gallery-item">
+                <img src="https://picsum.photos/400/300?random=2" alt="Gallery image">
+            </div>
+            <div class="gallery-item">
+                <img src="https://picsum.photos/400/300?random=3" alt="Gallery image">
+            </div>
+            <div class="gallery-item">
+                <img src="https://picsum.photos/400/300?random=4" alt="Gallery image">
+            </div>
+        </div>
+        
+        <footer>
+            <p>Created with <i class="fas fa-heart" style="color: #ff3366;"></i> using CSS Media Queries</p>
+            <p>Resize the browser window to see the responsive design in action!</p>
+        </footer>
+    </div>
+
+    <script>
+        // Simple JavaScript to make the navigation toggle work
+        document.querySelector('.nav-toggle').addEventListener('click', function() {
+            const nav = document.querySelector('nav ul');
+            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+        });
+    </script>
+</body>
+</html>
